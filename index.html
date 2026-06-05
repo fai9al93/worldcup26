@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1E1EFF">
+<title>كأس العالم 2026 — المباريات والمواعيد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Noto+Kufi+Arabic:wght@400;600;700;800;900&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1ff; --bg2:#ffffff; --card:#ffffff; --card2:#10164f;
+    --line:#dbe0ff; --gold:#304ffe; --gold2:#1c20cc;
+    --txt:#10164f; --mut:#6b73b8; --green:#16a06a; --red:#e23b4b; --blue:#304ffe;
+    --navy:#10164f; --hero:#1e1eff; --lav:#eaedff;
+    /* الباليت الرسمي لكأس العالم 26 */
+    --turq:#15e6c9; --coral:#ff9e7a; --brandred:#ff2e17; --brandgreen:#16b33f; --purple:#6e1fe6; --yellow:#e6f542;
+    --disp:'Anton','Noto Kufi Arabic',Impact,sans-serif;
+    --rad:16px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Noto Sans Arabic',Tahoma,system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--txt);min-height:100vh;padding-bottom:40px;
+  }
+  a{color:var(--blue)}
+  .wrap{max-width:920px;margin:0 auto;padding:0 14px}
+  header.top{position:relative;text-align:center;padding:30px 14px 24px;background:var(--hero);overflow:hidden}
+  header.top::before{content:"";position:absolute;top:-70px;left:-50px;width:240px;height:240px;background:var(--turq);border-radius:50% 50% 50% 0;z-index:1}
+  header.top::after{content:"";position:absolute;bottom:-70px;right:-50px;width:200px;height:200px;background:var(--coral);border-radius:50%;z-index:1}
+  header.top>*{position:relative;z-index:2}
+  header.top .big26{font-family:var(--disp);font-size:108px;line-height:.78;color:#000;margin:0;letter-spacing:-3px}
+  header.top h1{font-family:var(--disp);margin:8px 0 4px;font-size:31px;letter-spacing:.5px;color:#fff;font-weight:400;text-shadow:0 2px 14px rgba(0,0,0,.25)}
+  header.top h1 .y{color:#000}
+  header.top p{margin:0;color:#fff;font-size:13px;font-weight:700}
+  .hosts{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+  .hosts span{background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.45);color:#fff;border-radius:30px;padding:5px 13px;font-size:12px;font-weight:700}
+  .brandstrip{display:flex;height:7px}
+  .brandstrip i{flex:1}
+  header.top .trophy{width:58px;height:auto;display:block;margin:0 auto 2px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.3))}
+  header.top .logo-img{max-width:130px;max-height:120px;width:auto;display:none;margin:0 auto 4px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.35))}
+
+  /* timezone bar */
+  .tzbar{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--rad);
+    padding:12px 14px;margin:14px 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between
+  }
+  .tzbar .lbl{font-size:13px;color:var(--mut)}
+  .tzbar select{
+    background:var(--bg2);color:var(--txt);border:1px solid var(--line);
+    border-radius:10px;padding:8px 10px;font-size:14px;font-family:inherit;max-width:230px
+  }
+  .tzNow{font-size:12px;color:var(--blue);font-weight:700}
+
+  /* tabs */
+  .tabs{display:flex;gap:6px;background:#fff;border:1px solid var(--line);
+    border-radius:30px;padding:5px;position:sticky;top:8px;z-index:40;box-shadow:0 8px 24px rgba(16,22,79,.10)}
+  .tabs button{
+    flex:1;border:0;background:transparent;color:var(--navy);font-family:var(--disp);
+    font-size:14.5px;font-weight:400;letter-spacing:.3px;padding:11px 4px;border-radius:24px;cursor:pointer;transition:.18s
+  }
+  .tabs button.active{background:var(--blue);color:#fff}
+  .panel{display:none;animation:fade .25s}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* controls */
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  .controls input,.controls select{
+    background:var(--card);color:var(--txt);border:1px solid var(--line);
+    border-radius:12px;padding:10px 12px;font-size:14px;font-family:inherit;flex:1;min-width:120px
+  }
+  .pill{background:var(--card);border:1px solid var(--line);border-radius:30px;padding:8px 12px;font-size:12.5px;color:var(--mut);cursor:pointer;white-space:nowrap}
+  .pill.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+  /* filters */
+  .filterbox{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:12px;margin:14px 0}
+  .filterbox .search{width:100%;background:var(--bg2);color:var(--txt);border:1px solid var(--line);
+    border-radius:12px;padding:10px 12px;font-size:14px;font-family:inherit;margin-bottom:10px}
+  .fpresets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+  .preset{border:1px solid var(--gold);background:transparent;color:var(--gold);border-radius:30px;
+    font-size:12.5px;font-weight:700;padding:7px 12px;cursor:pointer;font-family:inherit}
+  .preset.on{background:linear-gradient(180deg,var(--gold),var(--gold2));color:#fff}
+  .preset.clear{border-color:var(--red);color:var(--red)}
+  .fsec{border-top:1px solid var(--line);margin-top:10px;padding-top:8px}
+  .fsec>.fhead{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:13px;font-weight:700;color:var(--txt);padding:4px 0}
+  .fsec>.fhead .cnt{font-size:11px;color:var(--gold);font-weight:700}
+  .fsec>.fhead .arr{color:var(--mut);transition:.2s}
+  .fsec.open>.fhead .arr{transform:rotate(180deg)}
+  .fbody{display:none;margin-top:8px}
+  .fsec.open .fbody{display:block}
+  .chiprow{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{border:1px solid var(--line);background:var(--bg2);color:var(--mut);border-radius:30px;
+    font-size:12.5px;padding:6px 11px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px;transition:.12s}
+  .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .gchip.on{background:var(--gold);color:#fff;border-color:var(--gold)}
+  .gblock{margin-bottom:8px}
+  .gblock .glabel{font-size:11px;color:var(--mut);margin-bottom:4px;font-weight:700}
+  .logicrow{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .logicrow .lbl{font-size:12px;color:var(--mut)}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .seg button{border:0;background:var(--bg2);color:var(--mut);font-family:inherit;font-size:12px;font-weight:700;padding:7px 12px;cursor:pointer}
+  .seg button.on{background:var(--green);color:#04241a}
+  .activebar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;font-size:12px;color:var(--mut)}
+  .achip{background:var(--card2);border:1px solid var(--line);border-radius:30px;padding:4px 9px;font-size:11.5px;display:inline-flex;gap:5px;align-items:center}
+  .achip b{color:var(--txt);font-weight:700}
+  .achip .x{color:var(--red);cursor:pointer;font-weight:800}
+  .resultcount{font-size:12.5px;color:var(--gold);font-weight:700;margin:4px 2px 0}
+
+  /* day group */
+  .day{margin:20px 0 8px}
+  .day h3{
+    margin:0 0 8px;font-family:var(--disp);font-weight:400;font-size:18px;color:var(--navy);display:flex;align-items:center;gap:10px;letter-spacing:.3px
+  }
+  .day h3:before{content:"";flex:1;height:2px;background:var(--line)}
+  .day h3:after{content:"";flex:1;height:2px;background:var(--line)}
+
+  .match{
+    background:var(--navy);border:0;border-radius:14px;
+    padding:12px 14px;margin-bottom:9px;display:flex;align-items:center;gap:10px;color:#fff
+  }
+  .match .grp{background:var(--turq);border:0;color:#000;font-family:var(--disp);
+    border-radius:9px;font-size:13px;font-weight:400;min-width:32px;text-align:center;padding:6px 0}
+  .teams{flex:1;display:flex;flex-direction:column;gap:6px}
+  .trow{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:700;color:#fff}
+  .trow .fl{font-size:20px;width:24px;text-align:center}
+  .tname{flex:1;font-family:'Noto Kufi Arabic',sans-serif;font-weight:700}
+  .vs{font-size:10px;color:#98a1e6;text-align:center;margin:-2px 0;font-weight:700}
+  .mtime{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px}
+  .clock{font-family:var(--disp);font-size:22px;font-weight:400;color:#fff;font-variant-numeric:tabular-nums}
+  .mdate{font-size:11px;color:#98a1e6}
+  .addbtn{
+    border:0;color:#fff;background:var(--blue);border-radius:10px;
+    font-size:11px;font-weight:800;padding:7px 10px;cursor:pointer;font-family:inherit;white-space:nowrap
+  }
+  .addbtn:active{filter:brightness(1.2)}
+
+  .bigbtn{
+    display:block;width:100%;border:0;border-radius:14px;padding:15px;cursor:pointer;
+    font-family:var(--disp);font-size:17px;font-weight:400;letter-spacing:.4px;
+    background:var(--blue);color:#fff;margin:6px 0;box-shadow:0 8px 22px rgba(48,79,254,.32)
+  }
+  .bigbtn.alt{background:var(--navy);box-shadow:0 8px 22px rgba(16,22,79,.25)}
+  .addbtn.added{background:var(--green)}
+  .calnote{font-size:12px;color:var(--navy);line-height:1.6;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
+  .calnote b{color:var(--blue)}
+  .note{font-size:12px;color:var(--mut);line-height:1.7;background:var(--lav);border:0;border-radius:12px;padding:12px;margin:12px 0}
+
+  /* groups / standings */
+  .gcard{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:12px;margin-bottom:12px;box-shadow:0 4px 14px rgba(16,22,79,.05)}
+  .gcard h4{margin:0 0 10px;font-family:var(--disp);font-weight:400;font-size:19px;color:var(--navy);letter-spacing:.3px}
+  table.st{width:100%;border-collapse:collapse;font-size:13.5px}
+  table.st th{color:var(--mut);font-weight:600;font-size:11.5px;padding:4px 3px;text-align:center}
+  table.st td{padding:7px 3px;text-align:center;border-top:1px solid var(--line)}
+  table.st td.tn{text-align:right;font-weight:700}
+  table.st tr.q1 td{background:rgba(39,192,138,.12)}
+  table.st tr.q2 td{background:rgba(79,139,255,.12)}
+  table.st tr.q3 td{background:rgba(245,196,81,.10)}
+  .pos{font-weight:800;width:20px}
+  .badge{font-size:9px;padding:2px 5px;border-radius:6px;font-weight:800}
+  .b1{background:var(--green);color:#04241a}
+  .b2{background:var(--blue);color:#fff}
+  .b3{background:#f4b740;color:#3a2a00}
+  .gmatch{display:flex;align-items:center;gap:6px;justify-content:space-between;font-size:13px;padding:6px 0;border-top:1px dashed var(--line)}
+  .gmatch .side{flex:1;display:flex;align-items:center;gap:5px}
+  .gmatch .side.r{justify-content:flex-end;text-align:left}
+  .res{display:flex;gap:4px}
+  .res button{border:1px solid var(--line);background:var(--bg2);color:var(--mut);border-radius:7px;
+    font-size:11px;font-weight:800;padding:5px 8px;cursor:pointer;font-family:inherit}
+  .res button.sel{background:var(--gold);color:#fff;border-color:var(--gold)}
+  .scorechip{background:var(--green);color:#04241a;border-radius:7px;font-size:11px;font-weight:800;padding:5px 7px;font-variant-numeric:tabular-nums}
+
+  /* sync bar */
+  .syncbar{background:var(--navy);border:0;border-radius:var(--rad);padding:14px;margin-bottom:14px}
+  .syncbtn{width:100%;border:0;border-radius:12px;padding:13px;cursor:pointer;font-family:var(--disp);letter-spacing:.4px;
+    font-size:16px;font-weight:400;background:var(--blue);color:#fff;box-shadow:0 6px 18px rgba(48,79,254,.4)}
+  .syncbtn:disabled{opacity:.6;cursor:default}
+  .syncstatus{font-size:12px;color:#c5cbf5;margin-top:9px;line-height:1.6}
+  .syncstatus b{color:#fff}
+  .autorow{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#c5cbf5;margin-top:9px}
+  .autorow input{width:16px;height:16px;accent-color:var(--blue)}
+  .srcrow{margin-top:8px;display:none;gap:6px;align-items:center}
+  .srcrow.show{display:flex}
+  .srcrow input{flex:1;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:7px 9px;font-size:11px;font-family:inherit;direction:ltr;text-align:left}
+  .linklike{background:none;border:0;color:#aeb6ff;font-size:11.5px;cursor:pointer;font-family:inherit;text-decoration:underline;padding:0;margin-top:8px}
+
+  /* bracket */
+  .ko-round{margin-bottom:20px}
+  .ko-round h4{font-family:var(--disp);font-weight:400;font-size:18px;color:var(--navy);margin:0 0 6px;display:flex;justify-content:space-between;align-items:center;letter-spacing:.3px}
+  .ko-round .dt{font-size:11px;color:var(--mut);font-weight:600}
+  .ko{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-bottom:8px}
+  .ko .mno{font-size:10px;color:var(--mut);margin-bottom:4px}
+  .ko .slot{display:flex;align-items:center;gap:6px;padding:5px 4px;border-radius:8px;cursor:pointer}
+  .ko .slot+.slot{border-top:1px dashed var(--line)}
+  .ko .slot.win{background:rgba(39,192,138,.16)}
+  .ko .slot .fl{font-size:17px;width:22px;text-align:center}
+  .ko .slot .nm{flex:1;font-size:13.5px;font-weight:600}
+  .ko .slot .ph{color:var(--mut);font-weight:500;font-size:12.5px}
+  .ko select{background:var(--bg2);color:var(--txt);border:1px solid var(--line);border-radius:8px;
+    padding:6px;font-size:12.5px;font-family:inherit;flex:1}
+  .ko .chk{color:var(--green);font-weight:800;font-size:13px}
+  .champ{background:var(--hero);border:0;
+    border-radius:16px;padding:20px;text-align:center;margin-top:6px}
+  .champ .lbl{color:#fff;font-size:13px;font-weight:800}
+  .champ .name{font-family:var(--disp);font-weight:400;font-size:30px;color:var(--navy);margin-top:8px;letter-spacing:.5px}
+  .resetbtn{background:transparent;border:1px solid var(--red);color:var(--red);border-radius:10px;
+    padding:8px 12px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer}
+  footer{text-align:center;color:var(--mut);font-size:11.5px;margin-top:26px;line-height:1.8}
+  /* Arabic display text: keep heavy weight where Anton falls back to Noto Kufi */
+  .day h3,.gcard h4,.ko-round h4,header.top h1,.champ .name,.tabs button,.bigbtn,.syncbtn{font-weight:800}
+</style>
+</head>
+<body>
+<header class="top">
+  <img class="logo-img" id="userLogo" src="logo.png" alt="الشعار" onload="this.style.display='block';">
+  <div class="big26">26</div>
+  <h1>كأس العالم <span class="y">2026</span></h1>
+  <p>الولايات المتحدة · كندا · المكسيك — 11 يونيو إلى 19 يوليو</p>
+  <div class="hosts"><span>48 منتخب</span><span>12 مجموعة</span><span>104 مباراة</span></div>
+</header>
+<div class="brandstrip">
+  <i style="background:var(--hero)"></i><i style="background:var(--turq)"></i><i style="background:var(--coral)"></i><i style="background:var(--brandred)"></i><i style="background:var(--brandgreen)"></i><i style="background:var(--purple)"></i><i style="background:var(--yellow)"></i>
+</div>
+
+<div class="wrap">
+  <div class="tzbar">
+    <div>
+      <div class="lbl">المنطقة الزمنية للعرض</div>
+      <select id="tzSel"></select>
+    </div>
+    <div style="text-align:left">
+      <div class="lbl">الوقت عندك الآن</div>
+      <div class="tzNow" id="tzNow">—</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="active" data-tab="matches">المباريات</button>
+    <button data-tab="groups">المجموعات</button>
+    <button data-tab="bracket">الإقصائيات</button>
+  </div>
+
+  <!-- MATCHES -->
+  <section class="panel active" id="tab-matches">
+    <div class="filterbox">
+      <input id="search" class="search" placeholder="ابحث باسم منتخب...">
+      <div class="fpresets">
+        <button class="preset" id="presetBig">الكبار الخمسة</button>
+        <button class="preset clear" id="presetClear">مسح كل الفلاتر</button>
+      </div>
+
+      <div class="fsec" id="secTeams">
+        <div class="fhead"><span>فلتر حسب المنتخبات <span class="cnt" id="cntTeams"></span></span><span class="arr">▾</span></div>
+        <div class="fbody" id="teamsBody"></div>
+      </div>
+
+      <div class="fsec" id="secGroups">
+        <div class="fhead"><span>فلتر حسب المجموعات <span class="cnt" id="cntGroups"></span></span><span class="arr">▾</span></div>
+        <div class="fbody">
+          <div class="chiprow" id="groupsChips"></div>
+        </div>
+      </div>
+
+      <div class="logicrow" id="logicRow">
+        <span class="lbl">طريقة الدمج بين المنتخبات والمجموعات:</span>
+        <div class="seg">
+          <button data-logic="or" class="on">أي فلتر (أو)</button>
+          <button data-logic="and">تطابق الكل (و)</button>
+        </div>
+      </div>
+
+      <div class="activebar" id="activeBar"></div>
+      <div class="resultcount" id="resultCount"></div>
+    </div>
+    <button class="bigbtn" id="dlAll">حمّل المباريات الظاهرة إلى تقويم جوالك (.ics)</button>
+    <button class="bigbtn alt" id="updateCal">حدّث نتائج مبارياتي في التقويم</button>
+    <div class="calnote" id="calNote"></div>
+    <div class="note">
+      اضغط <b>«أضف»</b> بجانب أي مباراة لتنزيل ملف يضيفها لتقويم جوالك (آيفون/أندرويد) بتوقيتك المحلي.
+      ولمّا تنزل النتائج، اضغط <b>«حدّث نتائج مبارياتي في التقويم»</b> ويتولّد ملف بنفس الأحداث محدّثة بالنتيجة — استورده مرة ثانية وبيحدّث نفس المباريات في تقويمك (ما يكررها).
+    </div>
+    <div id="matchList"></div>
+  </section>
+
+  <!-- GROUPS -->
+  <section class="panel" id="tab-groups">
+    <div class="syncbar">
+      <button class="syncbtn" id="syncBtn">تحديث النتائج تلقائياً من الإنترنت</button>
+      <div class="autorow">
+        <input type="checkbox" id="autoSync"><label for="autoSync">تحديث تلقائي كل 5 دقائق وأنا في التطبيق</label>
+      </div>
+      <div class="syncstatus" id="syncStatus">المصدر: openfootball (مجاني، بدون اشتراك). يجلب النتائج الفعلية ويعبّي الطاولة لمّا تبدأ المباريات.</div>
+      <button class="linklike" id="srcToggle">تغيير مصدر النتائج</button>
+      <div class="srcrow" id="srcRow">
+        <input id="srcInput" placeholder="رابط JSON للنتائج">
+        <button class="res" id="srcSave" style="border:1px solid var(--green);color:var(--green);background:transparent;border-radius:8px;padding:7px 10px;font-weight:800;cursor:pointer;font-family:inherit">حفظ</button>
+      </div>
+    </div>
+    <div class="note">
+      توقّع نتيجة كل مباراة (فوز ١ / تعادل / فوز ٢) ويتحدّث الترتيب تلقائياً.
+      <b style="color:var(--green)">الأخضر = الأول</b> ·
+      <b style="color:var(--blue)">الأزرق = الثاني</b> ·
+      <b style="color:#c98e00">الذهبي = الثالث</b> — والمتأهلون ينتقلون لجدول الإقصائيات.
+    </div>
+    <div id="groupsWrap"></div>
+  </section>
+
+  <!-- BRACKET -->
+  <section class="panel" id="tab-bracket">
+    <div class="note">
+      تتعبّى خانات دور الـ32 تلقائياً من توقّعاتك في المجموعات (أول وثاني كل مجموعة).
+      اختر أفضل 8 من أصحاب المركز الثالث من القوائم، ثم اضغط على المنتخب الفائز في كل مباراة لينتقل للدور التالي.
+      كل الخانات قابلة للتعديل يدوياً.
+      <div style="margin-top:8px"><button class="resetbtn" id="resetKO">تصفير التوقعات</button></div>
+    </div>
+    <div id="bracketWrap"></div>
+  </section>
+</div>
+
+<footer>
+  المواعيد الأصلية بتوقيت مكة المكرمة (UTC+3) كما في الجدول المصدر · أوقات الأدوار الإقصائية تقريبية حسب جدول فيفا الرسمي.<br>
+  بيانات المجموعات والمباريات منقولة كما هي من الصورة. صُنع كتطبيق ويب يعمل بدون إنترنت.
+</footer>
+
+<script>
+/* ===================== DATA ===================== */
+const T = {
+  MEX:["المكسيك","🇲🇽"], RSA:["جنوب أفريقيا","🇿🇦"], KOR:["كوريا الجنوبية","🇰🇷"], CZE:["التشيك","🇨🇿"],
+  CAN:["كندا","🇨🇦"], BIH:["البوسنة","🇧🇦"], QAT:["قطر","🇶🇦"], SUI:["سويسرا","🇨🇭"],
+  BRA:["البرازيل","🇧🇷"], MAR:["المغرب","🇲🇦"], HAI:["هايتي","🇭🇹"], SCO:["إسكتلندا","🏴󠁧󠁢󠁳󠁣󠁴󠁿"],
+  USA:["أمريكا","🇺🇸"], PAR:["باراغواي","🇵🇾"], AUS:["استراليا","🇦🇺"], TUR:["تركيا","🇹🇷"],
+  GER:["ألمانيا","🇩🇪"], CUW:["كوراساو","🇨🇼"], CIV:["ساحل العاج","🇨🇮"], ECU:["الاكوادور","🇪🇨"],
+  NED:["هولندا","🇳🇱"], JPN:["اليابان","🇯🇵"], SWE:["السويد","🇸🇪"], TUN:["تونس","🇹🇳"],
+  BEL:["بلجيكا","🇧🇪"], EGY:["مصر","🇪🇬"], IRN:["إيران","🇮🇷"], NZL:["نيوزيلاندا","🇳🇿"],
+  ESP:["اسبانيا","🇪🇸"], CPV:["الرأس الأخضر","🇨🇻"], KSA:["السعودية","🇸🇦"], URU:["أوروغواي","🇺🇾"],
+  FRA:["فرنسا","🇫🇷"], SEN:["السنغال","🇸🇳"], IRQ:["العراق","🇮🇶"], NOR:["النرويج","🇳🇴"],
+  ARG:["الأرجنتين","🇦🇷"], ALG:["الجزائر","🇩🇿"], AUT:["النمسا","🇦🇹"], JOR:["الأردن","🇯🇴"],
+  POR:["البرتغال","🇵🇹"], COD:["الكونغو","🇨🇩"], UZB:["أوزباكستان","🇺🇿"], COL:["كولومبيا","🇨🇴"],
+  ENG:["إنجلترا","🏴󠁧󠁢󠁥󠁮󠁧󠁿"], CRO:["كرواتيا","🇭🇷"], GHA:["غانا","🇬🇭"], PAN:["بنما","🇵🇦"]
+};
+const GROUPS = {
+  A:["MEX","RSA","KOR","CZE"], B:["CAN","BIH","QAT","SUI"], C:["BRA","MAR","HAI","SCO"],
+  D:["USA","PAR","AUS","TUR"], E:["GER","CUW","CIV","ECU"], F:["NED","JPN","SWE","TUN"],
+  G:["BEL","EGY","IRN","NZL"], H:["ESP","CPV","KSA","URU"], I:["FRA","SEN","IRQ","NOR"],
+  J:["ARG","ALG","AUT","JOR"], K:["POR","COD","UZB","COL"], L:["ENG","CRO","GHA","PAN"]
+};
+// [group, teamA, teamB, "Mecca local datetime"]  (UTC+3)
+const MATCHES = [
+  ["A","MEX","RSA","2026-06-11T22:00"],["A","KOR","CZE","2026-06-12T05:00"],
+  ["A","RSA","CZE","2026-06-18T07:00"],["A","MEX","KOR","2026-06-19T04:00"],
+  ["A","RSA","KOR","2026-06-25T04:00"],["A","MEX","CZE","2026-06-25T04:00"],
+  ["B","BIH","CAN","2026-06-12T22:00"],["B","SUI","QAT","2026-06-13T22:00"],
+  ["B","SUI","BIH","2026-06-18T22:00"],["B","CAN","QAT","2026-06-19T01:00"],
+  ["B","SUI","CAN","2026-06-24T22:00"],["B","QAT","BIH","2026-06-24T22:00"],
+  ["C","BRA","MAR","2026-06-14T01:00"],["C","SCO","HAI","2026-06-14T04:00"],
+  ["C","SCO","MAR","2026-06-20T01:00"],["C","BRA","HAI","2026-06-20T04:00"],
+  ["C","MAR","HAI","2026-06-25T01:00"],["C","SCO","BRA","2026-06-25T01:00"],
+  ["D","USA","PAR","2026-06-13T04:00"],["D","TUR","AUS","2026-06-14T07:00"],
+  ["D","USA","AUS","2026-06-19T22:00"],["D","TUR","PAR","2026-06-20T07:00"],
+  ["D","USA","TUR","2026-06-26T05:00"],["D","AUS","PAR","2026-06-26T05:00"],
+  ["E","GER","CUW","2026-06-14T20:00"],["E","ECU","CIV","2026-06-15T02:00"],
+  ["E","GER","CIV","2026-06-20T23:00"],["E","ECU","CUW","2026-06-21T03:00"],
+  ["E","CIV","CUW","2026-06-25T23:00"],["E","ECU","GER","2026-06-25T23:00"],
+  ["F","JPN","NED","2026-06-14T23:00"],["F","TUN","SWE","2026-06-15T05:00"],
+  ["F","NED","SWE","2026-06-20T20:00"],["F","JPN","TUN","2026-06-21T07:00"],
+  ["F","TUN","NED","2026-06-26T02:00"],["F","SWE","JPN","2026-06-26T02:00"],
+  ["G","EGY","BEL","2026-06-15T22:00"],["G","NZL","IRN","2026-06-16T04:00"],
+  ["G","BEL","IRN","2026-06-21T22:00"],["G","NZL","EGY","2026-06-22T04:00"],
+  ["G","NZL","BEL","2026-06-27T06:00"],["G","IRN","EGY","2026-06-27T06:00"],
+  ["H","CPV","ESP","2026-06-15T07:00"],["H","URU","KSA","2026-06-16T01:00"],
+  ["H","ESP","KSA","2026-06-21T19:00"],["H","URU","CPV","2026-06-22T01:00"],
+  ["H","KSA","CPV","2026-06-27T03:00"],["H","URU","ESP","2026-06-27T03:00"],
+  ["I","SEN","FRA","2026-06-16T22:00"],["I","IRQ","NOR","2026-06-17T01:00"],
+  ["I","IRQ","FRA","2026-06-23T00:00"],["I","SEN","NOR","2026-06-23T03:00"],
+  ["I","NOR","FRA","2026-06-26T22:00"],["I","IRQ","SEN","2026-06-26T22:00"],
+  ["J","ARG","ALG","2026-06-17T04:00"],["J","AUT","JOR","2026-06-17T07:00"],
+  ["J","AUT","ARG","2026-06-22T20:00"],["J","JOR","ALG","2026-06-23T06:00"],
+  ["J","AUT","ALG","2026-06-28T05:00"],["J","ARG","JOR","2026-06-28T05:00"],
+  ["K","POR","COD","2026-06-17T20:00"],["K","UZB","COL","2026-06-18T05:00"],
+  ["K","UZB","POR","2026-06-23T20:00"],["K","COD","COL","2026-06-24T05:00"],
+  ["K","POR","COL","2026-06-28T02:30"],["K","COD","UZB","2026-06-28T02:30"],
+  ["L","ENG","CRO","2026-06-17T23:00"],["L","GHA","PAN","2026-06-18T02:00"],
+  ["L","ENG","GHA","2026-06-23T23:00"],["L","CRO","PAN","2026-06-24T02:00"],
+  ["L","ENG","PAN","2026-06-28T00:00"],["L","GHA","CRO","2026-06-28T00:00"]
+];
+
+/* R32 structure: slots reference winners(W_X)/runners(R_X)/thirds(Tn) */
+const R32 = [
+  {m:73,a:{t:"R",g:"A"},b:{t:"R",g:"B"},date:"2026-06-28"},
+  {m:74,a:{t:"W",g:"E"},b:{t:"T",i:0,from:"A/B/C/D/F"},date:"2026-06-28"},
+  {m:75,a:{t:"W",g:"F"},b:{t:"R",g:"C"},date:"2026-06-29"},
+  {m:76,a:{t:"W",g:"C"},b:{t:"R",g:"F"},date:"2026-06-29"},
+  {m:77,a:{t:"W",g:"I"},b:{t:"T",i:1,from:"C/D/F/G/H"},date:"2026-06-29"},
+  {m:78,a:{t:"R",g:"E"},b:{t:"R",g:"I"},date:"2026-06-30"},
+  {m:79,a:{t:"W",g:"A"},b:{t:"T",i:2,from:"C/E/F/H/I"},date:"2026-06-30"},
+  {m:80,a:{t:"W",g:"L"},b:{t:"T",i:3,from:"E/H/I/J/K"},date:"2026-06-30"},
+  {m:81,a:{t:"W",g:"D"},b:{t:"T",i:4,from:"B/E/F/I/J"},date:"2026-07-01"},
+  {m:82,a:{t:"W",g:"G"},b:{t:"T",i:5,from:"A/E/H/I/J"},date:"2026-07-01"},
+  {m:83,a:{t:"R",g:"K"},b:{t:"R",g:"L"},date:"2026-07-01"},
+  {m:84,a:{t:"W",g:"H"},b:{t:"R",g:"J"},date:"2026-07-02"},
+  {m:85,a:{t:"W",g:"B"},b:{t:"T",i:6,from:"E/F/G/I/J"},date:"2026-07-02"},
+  {m:86,a:{t:"W",g:"J"},b:{t:"R",g:"H"},date:"2026-07-02"},
+  {m:87,a:{t:"W",g:"K"},b:{t:"T",i:7,from:"D/E/I/J/L"},date:"2026-07-03"},
+  {m:88,a:{t:"R",g:"D"},b:{t:"R",g:"G"},date:"2026-07-03"}
+];
+/* later rounds reference winners of match numbers */
+const R16 = [
+  {m:89,a:74,b:77},{m:90,a:73,b:75},{m:91,a:76,b:78},{m:92,a:79,b:80},
+  {m:93,a:83,b:84},{m:94,a:81,b:82},{m:95,a:86,b:88},{m:96,a:85,b:87}
+];
+const QF = [{m:97,a:89,b:90},{m:98,a:93,b:94},{m:99,a:91,b:92},{m:100,a:95,b:96}];
+const SF = [{m:101,a:97,b:98},{m:102,a:99,b:100}];
+const TP = {m:103,a:101,b:102,loser:true};
+const FN = {m:104,a:101,b:102};
+const KO_DATES = {R16:"4 – 7 يوليو",QF:"9 – 11 يوليو",SF:"14 – 15 يوليو",TP:"18 يوليو",FN:"19 يوليو 2026"};
+const THIRD_GROUPS = ["A/B/C/D/F","C/D/F/G/H","C/E/F/H/I","E/H/I/J/K","B/E/F/I/J","A/E/H/I/J","E/F/G/I/J","D/E/I/J/L"];
+
+/* الكبار الخمسة حسب تصنيف فيفا (يونيو 2026): فرنسا، اسبانيا، الأرجنتين، إنجلترا، البرتغال */
+const BIG_FIVE = ["FRA","ESP","ARG","ENG","POR"];
+
+/* ===================== FILTER STATE ===================== */
+const filter = { teams:new Set(), groups:new Set(), logic:"or", q:"" };
+
+/* ===================== STATE ===================== */
+let store = {results:{}, scores:{}, thirds:[null,null,null,null,null,null,null,null], koWin:{}, r32override:{}, lastSync:null};
+try{const s=localStorage.getItem("wc26");if(s)store=Object.assign(store,JSON.parse(s));}catch(e){}
+if(!store.scores)store.scores={};
+if(!store.added)store.added=[];           // مفاتيح المباريات المضافة للتقويم
+if(typeof store.icsSeq!=="number")store.icsSeq=0; // رقم تحديث التقويم (SEQUENCE)
+function isAdded(m){return store.added.indexOf(matchKey(m))>=0;}
+function markAdded(m){const k=matchKey(m);if(store.added.indexOf(k)<0){store.added.push(k);save();}}
+function save(){try{localStorage.setItem("wc26",JSON.stringify(store));}catch(e){}}
+
+/* مصدر النتائج المباشر (مجاني، بدون مفتاح، متوافق مع CORS) */
+const DATA_URL_DEFAULT="https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
+let DATA_URL = (function(){try{return localStorage.getItem("wc26_url")||DATA_URL_DEFAULT;}catch(e){return DATA_URL_DEFAULT;}})();
+
+/* خريطة أسماء openfootball -> أكوادنا (تشمل خانات الملحق كما في الصورة) */
+const OF_NAME={
+  "mexico":"MEX","south africa":"RSA","south korea":"KOR","korea republic":"KOR",
+  "uefa path d winner":"CZE","czechia":"CZE","czech republic":"CZE",
+  "canada":"CAN","uefa path a winner":"BIH","bosnia":"BIH","bosnia and herzegovina":"BIH","bosnia & herzegovina":"BIH","qatar":"QAT","switzerland":"SUI",
+  "brazil":"BRA","morocco":"MAR","haiti":"HAI","scotland":"SCO",
+  "usa":"USA","united states":"USA","paraguay":"PAR","australia":"AUS","uefa path c winner":"TUR","turkey":"TUR","türkiye":"TUR","turkiye":"TUR",
+  "germany":"GER","curaçao":"CUW","curacao":"CUW","ivory coast":"CIV","côte d'ivoire":"CIV","cote d'ivoire":"CIV","ecuador":"ECU",
+  "netherlands":"NED","japan":"JPN","uefa path b winner":"SWE","sweden":"SWE","tunisia":"TUN",
+  "belgium":"BEL","egypt":"EGY","iran":"IRN","ir iran":"IRN","new zealand":"NZL",
+  "spain":"ESP","cape verde":"CPV","cabo verde":"CPV","saudi arabia":"KSA","uruguay":"URU",
+  "france":"FRA","senegal":"SEN","ic path 2 winner":"IRQ","iraq":"IRQ","norway":"NOR",
+  "argentina":"ARG","algeria":"ALG","austria":"AUT","jordan":"JOR",
+  "portugal":"POR","ic path 1 winner":"COD","dr congo":"COD","congo dr":"COD","democratic republic of the congo":"COD","uzbekistan":"UZB","colombia":"COL",
+  "england":"ENG","croatia":"CRO","ghana":"GHA","panama":"PAN"
+};
+function ofCode(name){if(!name)return null;return OF_NAME[String(name).trim().toLowerCase()]||null;}
+function extractScore(om){
+  if(typeof om.score1==="number"&&typeof om.score2==="number")return [om.score1,om.score2];
+  if(om.score){
+    if(Array.isArray(om.score.ft)&&om.score.ft.length===2)return om.score.ft;
+    if(typeof om.score1!=="undefined")return [om.score1,om.score2];
+  }
+  return null;
+}
+
+/* ===================== TIME HELPERS ===================== */
+const DEVICE_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Riyadh";
+let curTZ = DEVICE_TZ;
+function meccaToDate(s){ return new Date(s+":00+03:00"); }   // Mecca local -> instant
+function fmtTime(d,tz){
+  return new Intl.DateTimeFormat("ar-EG-u-nu-latn",{hour:"2-digit",minute:"2-digit",hour12:false,timeZone:tz}).format(d);
+}
+function fmtDayKey(d,tz){
+  return new Intl.DateTimeFormat("en-CA",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:tz}).format(d);
+}
+function fmtDayLabel(d,tz){
+  return new Intl.DateTimeFormat("ar-EG-u-nu-latn",{weekday:"long",day:"numeric",month:"long",timeZone:tz}).format(d);
+}
+function icsStamp(d){ // UTC -> YYYYMMDDTHHMMSSZ
+  return d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
+}
+
+/* ===================== ICS EXPORT ===================== */
+function buildEvent(m,seq){
+  const start=meccaToDate(m[3]); const end=new Date(start.getTime()+120*60000);
+  const na=T[m[1]][0], nb=T[m[2]][0];
+  const k=matchKey(m); const sc=store.scores[k];
+  const uid=("wc26-"+m[1]+m[2]+m[3]).replace(/[^a-z0-9]/gi,"")+"@worldcup";
+  const summary = sc ? (na+" "+sc[0]+"-"+sc[1]+" "+nb) : (na+" × "+nb+" (مجموعة "+m[0]+")");
+  const desc = sc ? ("النتيجة النهائية: "+na+" "+sc[0]+" - "+sc[1]+" "+nb+" — كأس العالم 2026") : ("كأس العالم 2026 — دور المجموعات، المجموعة "+m[0]);
+  return ["BEGIN:VEVENT","UID:"+uid,"DTSTAMP:"+icsStamp(new Date()),
+    "SEQUENCE:"+(typeof seq==="number"?seq:store.icsSeq),
+    "DTSTART:"+icsStamp(start),"DTEND:"+icsStamp(end),
+    "SUMMARY:"+summary,
+    "DESCRIPTION:"+desc,
+    "BEGIN:VALARM","TRIGGER:-PT30M","ACTION:DISPLAY","DESCRIPTION:تذكير بالمباراة","END:VALARM",
+    "END:VEVENT"].join("\r\n");
+}
+function downloadICS(events,name){
+  const cal=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//WorldCup2026//AR//","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+    ...events,"END:VCALENDAR"].join("\r\n");
+  const blob=new Blob([cal],{type:"text/calendar;charset=utf-8"});
+  const url=URL.createObjectURL(blob); const a=document.createElement("a");
+  a.href=url; a.download=name; document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},500);
+}
+
+/* ===================== FILTER ENGINE ===================== */
+function matchPasses(m){
+  // search (always AND)
+  if(filter.q){const s=T[m[1]][0]+" "+T[m[2]][0];if(!s.includes(filter.q))return false;}
+  const hasTeams=filter.teams.size>0, hasGroups=filter.groups.size>0;
+  if(!hasTeams && !hasGroups) return true;
+  const teamPass = hasTeams ? (filter.teams.has(m[1])||filter.teams.has(m[2])) : null;
+  const groupPass = hasGroups ? filter.groups.has(m[0]) : null;
+  if(hasTeams && hasGroups){
+    return filter.logic==="and" ? (teamPass && groupPass) : (teamPass || groupPass);
+  }
+  return hasTeams ? teamPass : groupPass;
+}
+function filteredRows(){
+  return MATCHES.map(m=>({m,d:meccaToDate(m[3])})).filter(o=>matchPasses(o.m)).sort((a,b)=>a.d-b.d);
+}
+
+/* ===================== RENDER: MATCHES ===================== */
+function renderMatches(){
+  const list=document.getElementById("matchList"); list.innerHTML="";
+  const rows=filteredRows();
+  updateFilterUI(rows.length);
+  let lastDay=null;
+  rows.forEach(o=>{
+    const dk=fmtDayKey(o.d,curTZ);
+    if(dk!==lastDay){
+      lastDay=dk;
+      const dd=document.createElement("div");dd.className="day";
+      dd.innerHTML='<h3>'+fmtDayLabel(o.d,curTZ)+'</h3>';
+      list.appendChild(dd);
+    }
+    const m=o.m;
+    const el=document.createElement("div");el.className="match";
+    el.innerHTML=
+      '<div class="grp">'+m[0]+'</div>'+
+      '<div class="teams">'+
+        '<div class="trow"><span class="fl">'+T[m[1]][1]+'</span><span class="tname">'+T[m[1]][0]+'</span></div>'+
+        '<div class="vs">×</div>'+
+        '<div class="trow"><span class="fl">'+T[m[2]][1]+'</span><span class="tname">'+T[m[2]][0]+'</span></div>'+
+      '</div>'+
+      '<div class="mtime"><div class="clock">'+fmtTime(o.d,curTZ)+'</div>'+
+      '<button class="addbtn'+(isAdded(m)?' added':'')+'">'+(isAdded(m)?'مضافة':'أضف')+'</button></div>';
+    el.querySelector(".addbtn").onclick=()=>{markAdded(m);downloadICS([buildEvent(m)],"match-"+m[1]+"-"+m[2]+".ics");renderMatches();};
+    list.appendChild(el);
+  });
+  updateCalNote();
+  if(!rows.length)list.innerHTML='<div class="note">لا توجد مباريات مطابقة.</div>';
+}
+
+/* ===================== STANDINGS ENGINE ===================== */
+function matchKey(m){return m[0]+"|"+m[1]+"|"+m[2]+"|"+m[3];}
+function computeStandings(g){
+  const teams={};GROUPS[g].forEach(t=>teams[t]={t,P:0,W:0,D:0,L:0,GF:0,GA:0,GD:0,Pts:0});
+  MATCHES.filter(m=>m[0]===g).forEach(m=>{
+    const k=matchKey(m);const r=store.results[k];const sc=store.scores[k];if(!r&&!sc)return;
+    const a=teams[m[1]],b=teams[m[2]];a.P++;b.P++;
+    let res=r;
+    if(sc){a.GF+=sc[0];a.GA+=sc[1];b.GF+=sc[1];b.GA+=sc[0];a.GD=a.GF-a.GA;b.GD=b.GF-b.GA;
+      res=sc[0]>sc[1]?"1":sc[0]<sc[1]?"2":"X";}
+    if(res==="1"){a.W++;b.L++;a.Pts+=3;}
+    else if(res==="2"){b.W++;a.L++;b.Pts+=3;}
+    else{a.D++;b.D++;a.Pts++;b.Pts++;}
+  });
+  const arr=Object.values(teams);
+  const idx={};GROUPS[g].forEach((t,i)=>idx[t]=i);
+  // ترتيب: نقاط ← فرق الأهداف ← الأهداف المسجلة ← ترتيب القرعة
+  arr.sort((x,y)=>y.Pts-x.Pts || y.GD-x.GD || y.GF-x.GF || idx[x.t]-idx[y.t]);
+  return arr;
+}
+function groupComplete(g){return MATCHES.filter(m=>m[0]===g).every(m=>store.results[matchKey(m)]);}
+function winnerOf(g){return computeStandings(g)[0].t;}
+function runnerOf(g){return computeStandings(g)[1].t;}
+function thirdOf(g){return computeStandings(g)[2].t;}
+
+/* ===================== RENDER: GROUPS ===================== */
+function renderGroups(){
+  const w=document.getElementById("groupsWrap");w.innerHTML="";
+  Object.keys(GROUPS).forEach(g=>{
+    const st=computeStandings(g);const done=groupComplete(g);
+    const card=document.createElement("div");card.className="gcard";
+    let rows="";
+    st.forEach((r,i)=>{
+      const cls=done?(i===0?"q1":i===1?"q2":i===2?"q3":""):"";
+      const bdg=done?(i===0?'<span class="badge b1">١</span>':i===1?'<span class="badge b2">٢</span>':i===2?'<span class="badge b3">٣</span>':""):"";
+      const gd=(r.GD>0?"+":"")+r.GD;
+      rows+='<tr class="'+cls+'"><td class="pos">'+(i+1)+'</td>'+
+        '<td class="tn">'+T[r.t][1]+' '+T[r.t][0]+' '+bdg+'</td>'+
+        '<td>'+r.P+'</td><td>'+r.W+'</td><td>'+r.D+'</td><td>'+r.L+'</td><td>'+gd+'</td><td><b>'+r.Pts+'</b></td></tr>';
+    });
+    let gms="";
+    MATCHES.filter(m=>m[0]===g).sort((a,b)=>meccaToDate(a[3])-meccaToDate(b[3])).forEach(m=>{
+      const k=matchKey(m);const r=store.results[k]||"";const sc=store.scores[k];
+      const scoreChip=sc?'<span class="scorechip">'+sc[0]+' - '+sc[1]+'</span>':'';
+      gms+='<div class="gmatch">'+
+        '<div class="side">'+T[m[1]][1]+' '+T[m[1]][0]+'</div>'+
+        '<div class="res">'+
+          '<button data-k="'+k+'" data-v="1" class="'+(r==="1"?"sel":"")+'">١</button>'+
+          '<button data-k="'+k+'" data-v="X" class="'+(r==="X"?"sel":"")+'">تعادل</button>'+
+          '<button data-k="'+k+'" data-v="2" class="'+(r==="2"?"sel":"")+'">٢</button>'+
+          scoreChip+
+        '</div>'+
+        '<div class="side r">'+T[m[2]][0]+' '+T[m[2]][1]+'</div>'+
+      '</div>';
+    });
+    card.innerHTML='<h4>المجموعة '+g+'</h4>'+
+      '<table class="st"><tr><th>#</th><th>المنتخب</th><th>ل</th><th>ف</th><th>ت</th><th>خ</th><th>+/-</th><th>نقاط</th></tr>'+rows+'</table>'+
+      '<div style="margin-top:8px">'+gms+'</div>';
+    card.querySelectorAll(".res button").forEach(b=>{
+      b.onclick=()=>{
+        const k=b.dataset.k;
+        store.results[k]=(store.results[k]===b.dataset.v)?undefined:b.dataset.v;
+        if(!store.results[k])delete store.results[k];
+        delete store.scores[k]; // إدخال يدوي يلغي النتيجة المجلوبة
+        save();renderGroups();
+      };
+    });
+    w.appendChild(card);
+  });
+}
+
+/* ===================== BRACKET ENGINE ===================== */
+function r32SlotTeam(mi,side){
+  const ov=store.r32override[mi+side];
+  if(ov!==undefined)return ov;
+  const ref=R32.find(x=>x.m===mi)[side];
+  if(ref.t==="W"){return groupComplete(ref.g)?winnerOf(ref.g):null;}
+  if(ref.t==="R"){return groupComplete(ref.g)?runnerOf(ref.g):null;}
+  if(ref.t==="T"){return store.thirds[ref.i]||null;}
+  return null;
+}
+function getMatchTeams(mi){
+  if(mi>=73&&mi<=88){return [r32SlotTeam(mi,"a"),r32SlotTeam(mi,"b")];}
+  const find=arr=>arr.find(x=>x.m===mi);
+  let mm=find(R16)||find(QF)||find(SF)||(FN.m===mi?FN:null)||(TP.m===mi?TP:null);
+  if(!mm)return[null,null];
+  if(mm.loser){return [loserOf(mm.a),loserOf(mm.b)];}
+  return [winnerOf2(mm.a),winnerOf2(mm.b)];
+}
+function winnerOf2(mi){return store.koWin[mi]||null;}
+function loserOf(mi){
+  const w=store.koWin[mi];if(!w)return null;
+  const [a,b]=getMatchTeams(mi);if(!a||!b)return null;
+  return w===a?b:a;
+}
+function pickWinner(mi,team){
+  if(!team)return;
+  if(store.koWin[mi]===team)delete store.koWin[mi];else store.koWin[mi]=team;
+  // clear downstream that depended on it (simple: clear all later picks)
+  save();renderBracket();
+}
+function slotHTML(mi,team,ref){
+  const won=team&&store.koWin[mi]===team;
+  let inner;
+  if(team){inner='<span class="fl">'+T[team][1]+'</span><span class="nm">'+T[team][0]+'</span>'+(won?'<span class="chk">●</span>':'');}
+  else{inner='<span class="fl">·</span><span class="nm ph">'+ref+'</span>';}
+  return '<div class="slot '+(won?"win":"")+'" data-m="'+mi+'" data-t="'+(team||"")+'">'+inner+'</div>';
+}
+function refLabel(ref){
+  if(ref.t==="W")return "الأول مجموعة "+ref.g;
+  if(ref.t==="R")return "الثاني مجموعة "+ref.g;
+  if(ref.t==="T")return "ثالث ("+ref.from+")";
+  return "الفائز م"+ref;
+}
+function renderBracket(){
+  const w=document.getElementById("bracketWrap");w.innerHTML="";
+
+  /* third-place selectors */
+  const tw=document.createElement("div");tw.className="ko-round";
+  tw.innerHTML='<h4>أفضل 8 من أصحاب المركز الثالث</h4>';
+  THIRD_GROUPS.forEach((from,i)=>{
+    const opts=from.split("/").map(g=>{
+      const t=groupComplete(g)?thirdOf(g):null;
+      const lbl=t?(T[t][1]+" "+T[t][0]+" (ثالث "+g+")"):("ثالث المجموعة "+g);
+      return '<option value="'+(t||"")+'" '+(store.thirds[i]===t&&t?"selected":"")+'>'+lbl+'</option>';
+    }).join("");
+    const box=document.createElement("div");box.className="ko";
+    box.innerHTML='<div class="mno">خانة الثالث رقم '+(i+1)+' — من المجموعات '+from+'</div>'+
+      '<div class="slot"><select data-ti="'+i+'"><option value="">— اختر —</option>'+opts+'</select></div>';
+    box.querySelector("select").onchange=e=>{store.thirds[i]=e.target.value||null;save();renderBracket();};
+    tw.appendChild(box);
+  });
+  w.appendChild(tw);
+
+  /* R32 */
+  const allTeams=Object.keys(T);
+  const r32w=document.createElement("div");r32w.className="ko-round";
+  r32w.innerHTML='<h4>دور الـ32 <span class="dt">28 يونيو – 3 يوليو</span></h4>';
+  R32.forEach(mt=>{
+    const a=r32SlotTeam(mt.m,"a"),b=r32SlotTeam(mt.m,"b");
+    const box=document.createElement("div");box.className="ko";
+    const teamOpts=(sel)=>'<option value="">— اختر يدوياً —</option>'+allTeams.map(t=>'<option value="'+t+'" '+(sel===t?"selected":"")+'>'+T[t][1]+" "+T[t][0]+'</option>').join("");
+    function sideHTML(side,team,ref){
+      if(team)return slotHTML(mt.m,team,refLabel(ref));
+      return '<div class="slot"><select data-m="'+mt.m+'" data-side="'+side+'">'+teamOpts("")+'</select></div>';
+    }
+    box.innerHTML='<div class="mno">مباراة '+mt.m+' · '+fmtKoDate(mt.date)+'</div>'+
+      sideHTML("a",a,mt.a)+sideHTML("b",b,mt.b);
+    box.querySelectorAll(".slot[data-t]").forEach(s=>{
+      s.onclick=()=>pickWinner(parseInt(s.dataset.m),s.dataset.t||null);
+    });
+    box.querySelectorAll("select[data-side]").forEach(sel=>{
+      sel.onchange=e=>{store.r32override[mt.m+e.target.dataset.side]=e.target.value||undefined;
+        if(!e.target.value)delete store.r32override[mt.m+e.target.dataset.side];save();renderBracket();};
+    });
+    r32w.appendChild(box);
+  });
+  w.appendChild(r32w);
+
+  /* later rounds */
+  [["دور الـ16",R16,KO_DATES.R16],["ربع النهائي",QF,KO_DATES.QF],["نصف النهائي",SF,KO_DATES.SF]].forEach(([title,arr,dt])=>{
+    const rw=document.createElement("div");rw.className="ko-round";
+    rw.innerHTML='<h4>'+title+' <span class="dt">'+dt+'</span></h4>';
+    arr.forEach(mt=>{
+      const [a,b]=getMatchTeams(mt.m);
+      const box=document.createElement("div");box.className="ko";
+      box.innerHTML='<div class="mno">مباراة '+mt.m+'</div>'+
+        slotHTML(mt.m,a,refLabel(mt.a))+slotHTML(mt.m,b,refLabel(mt.b));
+      box.querySelectorAll(".slot").forEach(s=>{s.onclick=()=>pickWinner(parseInt(s.dataset.m),s.dataset.t||null);});
+      rw.appendChild(box);
+    });
+    w.appendChild(rw);
+  });
+
+  /* third place */
+  const tpw=document.createElement("div");tpw.className="ko-round";
+  tpw.innerHTML='<h4>تحديد المركز الثالث <span class="dt">'+KO_DATES.TP+'</span></h4>';
+  {const [a,b]=getMatchTeams(TP.m);const box=document.createElement("div");box.className="ko";
+   box.innerHTML='<div class="mno">مباراة 103</div>'+slotHTML(TP.m,a,"خاسر نصف نهائي 1")+slotHTML(TP.m,b,"خاسر نصف نهائي 2");
+   box.querySelectorAll(".slot").forEach(s=>{s.onclick=()=>pickWinner(parseInt(s.dataset.m),s.dataset.t||null);});
+   tpw.appendChild(box);}
+  w.appendChild(tpw);
+
+  /* final */
+  const fw=document.createElement("div");fw.className="ko-round";
+  fw.innerHTML='<h4>النهائي <span class="dt">'+KO_DATES.FN+'</span></h4>';
+  {const [a,b]=getMatchTeams(FN.m);const box=document.createElement("div");box.className="ko";
+   box.innerHTML='<div class="mno">مباراة 104 · ملعب MetLife</div>'+slotHTML(FN.m,a,"الفائز م101")+slotHTML(FN.m,b,"الفائز م102");
+   box.querySelectorAll(".slot").forEach(s=>{s.onclick=()=>pickWinner(parseInt(s.dataset.m),s.dataset.t||null);});
+   fw.appendChild(box);}
+  w.appendChild(fw);
+
+  const champ=store.koWin[104];
+  const cw=document.createElement("div");cw.className="champ";
+  cw.innerHTML='<div class="lbl">بطل كأس العالم 2026</div><div class="name">'+
+    (champ?(T[champ][1]+" "+T[champ][0]):"—")+'</div>';
+  w.appendChild(cw);
+}
+function fmtKoDate(s){
+  const d=new Date(s+"T20:00:00+03:00");
+  return new Intl.DateTimeFormat("ar-EG-u-nu-latn",{day:"numeric",month:"long"}).format(d);
+}
+
+/* ===================== LIVE SYNC ===================== */
+function applyData(data){
+  let gUpd=0,kUpd=0;
+  (data&&data.matches||[]).forEach(om=>{
+    const sc=extractScore(om);
+    if(om.group){
+      if(!sc)return;
+      const g=String(om.group).replace(/group/i,"").trim();
+      const c1=ofCode(om.team1),c2=ofCode(om.team2);
+      if(!c1||!c2)return;
+      const mt=MATCHES.find(m=>m[0]===g&&((m[1]===c1&&m[2]===c2)||(m[1]===c2&&m[2]===c1)));
+      if(!mt)return;
+      const k=matchKey(mt);
+      let a=sc[0],b=sc[1]; if(mt[1]===c2){a=sc[1];b=sc[0];}
+      store.scores[k]=[a,b]; store.results[k]=a>b?"1":a<b?"2":"X"; gUpd++;
+      return;
+    }
+    // knockout best-effort
+    const c1=ofCode(om.team1),c2=ofCode(om.team2);
+    if(om.num){
+      if(c1&&c2&&om.num>=73&&om.num<=88){store.r32override[om.num+"a"]=c1;store.r32override[om.num+"b"]=c2;}
+      if(c1&&c2&&sc&&sc[0]!==sc[1]){store.koWin[om.num]=sc[0]>sc[1]?c1:c2;kUpd++;}
+    } else if(om.round&&/final/i.test(om.round)&&!/third/i.test(om.round)){
+      if(c1&&c2&&sc&&sc[0]!==sc[1]){store.koWin[104]=sc[0]>sc[1]?c1:c2;kUpd++;}
+    } else if(om.round&&/third/i.test(om.round)){
+      if(c1&&c2&&sc&&sc[0]!==sc[1]){store.koWin[103]=sc[0]>sc[1]?c1:c2;kUpd++;}
+    }
+  });
+  store.lastSync=new Date().toISOString(); save();
+  return {gUpd,kUpd};
+}
+let syncing=false;
+function fmtSync(iso){try{return new Intl.DateTimeFormat("ar-EG-u-nu-latn",{dateStyle:"medium",timeStyle:"short",timeZone:curTZ}).format(new Date(iso));}catch(e){return iso;}}
+function doSync(){
+  if(syncing)return; syncing=true;
+  const btn=document.getElementById("syncBtn"),st=document.getElementById("syncStatus");
+  if(btn){btn.disabled=true;btn.textContent="جاري التحديث...";}
+  fetch(DATA_URL,{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
+   .then(data=>{
+     const {kUpd}=applyData(data);
+     const played=Object.keys(store.scores).length;
+     if(st)st.innerHTML='آخر تحديث: <b>'+fmtSync(store.lastSync)+'</b><br>نتائج دور المجموعات المسجّلة: <b>'+played+'</b> من 72'+(kUpd?(' · إقصائيات محدّثة: <b>'+kUpd+'</b>'):'')+(played===0?'<br>لا توجد نتائج بعد — البطولة تبدأ ١١ يونيو ٢٠٢٦.':'');
+     renderGroups();renderBracket();renderMatches();
+   })
+   .catch(e=>{if(st)st.innerHTML='تعذّر الاتصال بالمصدر ('+e.message+'). تأكد من الإنترنت أو حدّث يدوياً.';})
+   .finally(()=>{syncing=false;if(btn){btn.disabled=false;btn.textContent="تحديث النتائج تلقائياً من الإنترنت";}});
+}
+let autoTimer=null;
+function initSync(){
+  document.getElementById("syncBtn").onclick=doSync;
+  document.getElementById("srcToggle").onclick=()=>{const r=document.getElementById("srcRow");r.classList.toggle("show");document.getElementById("srcInput").value=DATA_URL;};
+  document.getElementById("srcSave").onclick=()=>{
+    const v=document.getElementById("srcInput").value.trim();
+    if(v){DATA_URL=v;try{localStorage.setItem("wc26_url",v);}catch(e){}document.getElementById("syncStatus").textContent="تم حفظ المصدر. اضغط «تحديث».";}
+  };
+  const auto=document.getElementById("autoSync");
+  try{auto.checked=localStorage.getItem("wc26_auto")==="1";}catch(e){}
+  function setAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null;}if(auto.checked)autoTimer=setInterval(doSync,300000);}
+  auto.onchange=()=>{try{localStorage.setItem("wc26_auto",auto.checked?"1":"0");}catch(e){}setAuto();};
+  setAuto();
+  if(store.lastSync)document.getElementById("syncStatus").innerHTML='آخر تحديث: <b>'+fmtSync(store.lastSync)+'</b> · اضغط «تحديث» لجلب الجديد.';
+}
+
+/* ===================== TIMEZONE UI ===================== */
+const TZ_LIST=[
+  ["توقيت جهازي تلقائياً",DEVICE_TZ],
+  ["مكة المكرمة / الرياض (+3)","Asia/Riyadh"],
+  ["القاهرة (+2/+3)","Africa/Cairo"],
+  ["دبي / أبوظبي (+4)","Asia/Dubai"],
+  ["بغداد (+3)","Asia/Baghdad"],
+  ["الدوحة (+3)","Asia/Qatar"],
+  ["الكويت (+3)","Asia/Kuwait"],
+  ["عمّان (+3)","Asia/Amman"],
+  ["الدار البيضاء (+1)","Africa/Casablanca"],
+  ["لندن (+0/+1)","Europe/London"],
+  ["باريس / برلين (+1/+2)","Europe/Paris"],
+  ["نيويورك (-4)","America/New_York"],
+  ["لوس أنجلوس (-7)","America/Los_Angeles"],
+  ["مكسيكو سيتي (-6)","America/Mexico_City"]
+];
+function initTZ(){
+  const sel=document.getElementById("tzSel");
+  TZ_LIST.forEach(([n,z],i)=>{const o=document.createElement("option");o.value=z;o.textContent=n+(i===0?" — "+z:"");sel.appendChild(o);});
+  sel.value=DEVICE_TZ;
+  sel.onchange=()=>{curTZ=sel.value;renderMatches();tickClock();};
+  tickClock();setInterval(tickClock,1000*30);
+}
+function tickClock(){
+  document.getElementById("tzNow").textContent=
+    new Intl.DateTimeFormat("ar-EG-u-nu-latn",{weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false,timeZone:curTZ}).format(new Date());
+}
+
+/* ===================== INIT ===================== */
+function buildFilterChips(){
+  // teams grouped by group
+  const tb=document.getElementById("teamsBody");
+  tb.innerHTML=Object.keys(GROUPS).map(g=>
+    '<div class="gblock"><div class="glabel">المجموعة '+g+'</div><div class="chiprow">'+
+    GROUPS[g].map(t=>'<button class="chip tchip" data-team="'+t+'">'+T[t][1]+' '+T[t][0]+'</button>').join("")+
+    '</div></div>').join("");
+  tb.querySelectorAll(".tchip").forEach(c=>{
+    c.onclick=()=>{const t=c.dataset.team;filter.teams.has(t)?filter.teams.delete(t):filter.teams.add(t);renderMatches();};
+  });
+  // groups
+  const gc=document.getElementById("groupsChips");
+  gc.innerHTML=Object.keys(GROUPS).map(g=>'<button class="chip gchip" data-grp="'+g+'">مجموعة '+g+'</button>').join("");
+  gc.querySelectorAll(".gchip").forEach(c=>{
+    c.onclick=()=>{const g=c.dataset.grp;filter.groups.has(g)?filter.groups.delete(g):filter.groups.add(g);renderMatches();};
+  });
+}
+function updateFilterUI(count){
+  // chip highlight
+  document.querySelectorAll(".tchip").forEach(c=>c.classList.toggle("on",filter.teams.has(c.dataset.team)));
+  document.querySelectorAll(".gchip").forEach(c=>c.classList.toggle("on",filter.groups.has(c.dataset.grp)));
+  // counts
+  document.getElementById("cntTeams").textContent=filter.teams.size?("("+filter.teams.size+")"):"";
+  document.getElementById("cntGroups").textContent=filter.groups.size?("("+filter.groups.size+")"):"";
+  // big-five preset state
+  const bigOn=BIG_FIVE.every(t=>filter.teams.has(t));
+  document.getElementById("presetBig").classList.toggle("on",bigOn);
+  // logic row only relevant when both categories used
+  document.getElementById("logicRow").style.display=(filter.teams.size&&filter.groups.size)?"flex":"none";
+  // active bar
+  const ab=document.getElementById("activeBar");
+  const chips=[];
+  filter.teams.forEach(t=>chips.push('<span class="achip"><b>'+T[t][1]+' '+T[t][0]+'</b><span class="x" data-rt="'+t+'">✕</span></span>'));
+  filter.groups.forEach(g=>chips.push('<span class="achip"><b>مجموعة '+g+'</b><span class="x" data-rg="'+g+'">✕</span></span>'));
+  ab.innerHTML=chips.length?("<span>الفلاتر الفعّالة:</span>"+chips.join("")):"";
+  ab.querySelectorAll(".x[data-rt]").forEach(x=>x.onclick=()=>{filter.teams.delete(x.dataset.rt);renderMatches();});
+  ab.querySelectorAll(".x[data-rg]").forEach(x=>x.onclick=()=>{filter.groups.delete(x.dataset.rg);renderMatches();});
+  // result count
+  document.getElementById("resultCount").textContent="عدد المباريات الظاهرة: "+count+" من 72";
+}
+function initFilters(){
+  buildFilterChips();
+  // collapsible sections
+  document.querySelectorAll(".fsec>.fhead").forEach(h=>{
+    h.onclick=()=>h.parentElement.classList.toggle("open");
+  });
+  // search
+  document.getElementById("search").oninput=e=>{filter.q=(e.target.value||"").trim();renderMatches();};
+  // presets
+  document.getElementById("presetBig").onclick=()=>{
+    const bigOn=BIG_FIVE.every(t=>filter.teams.has(t));
+    if(bigOn){BIG_FIVE.forEach(t=>filter.teams.delete(t));}
+    else{BIG_FIVE.forEach(t=>filter.teams.add(t));document.getElementById("secTeams").classList.add("open");}
+    renderMatches();
+  };
+  document.getElementById("presetClear").onclick=()=>{
+    filter.teams.clear();filter.groups.clear();filter.q="";document.getElementById("search").value="";renderMatches();
+  };
+  // logic toggle
+  document.querySelectorAll(".seg button[data-logic]").forEach(b=>{
+    b.onclick=()=>{filter.logic=b.dataset.logic;
+      document.querySelectorAll(".seg button[data-logic]").forEach(x=>x.classList.toggle("on",x===b));
+      renderMatches();};
+  });
+  // download only what's visible (and remember them as added)
+  document.getElementById("dlAll").onclick=()=>{
+    const rows=filteredRows();
+    if(!rows.length){alert("لا توجد مباريات مطابقة للتنزيل.");return;}
+    rows.forEach(o=>markAdded(o.m));
+    downloadICS(rows.map(o=>buildEvent(o.m,store.icsSeq)), rows.length===72?"world-cup-2026-all.ics":"world-cup-2026-filtered.ics");
+    renderMatches();
+  };
+  // re-export added matches with updated scores + higher SEQUENCE so re-import updates them
+  document.getElementById("updateCal").onclick=()=>{
+    if(!store.added.length){alert("ما أضفت أي مباراة للتقويم بعد. اضغط «أضف» على المباريات اللي تبيها أول.");return;}
+    store.icsSeq=(store.icsSeq||0)+1; save();
+    const evs=store.added.map(k=>{const m=MATCHES.find(x=>matchKey(x)===k);return m?buildEvent(m,store.icsSeq):null;}).filter(Boolean);
+    downloadICS(evs,"world-cup-2026-update.ics");
+    updateCalNote();
+  };
+}
+function updateCalNote(){
+  const el=document.getElementById("calNote"); if(!el)return;
+  const n=store.added.length;
+  const withRes=store.added.filter(k=>store.scores[k]).length;
+  if(!n){el.innerHTML="لسا ما أضفت مباريات للتقويم.";return;}
+  el.innerHTML="أضفت <b>"+n+"</b> مباراة للتقويم"+(withRes?(" · ظهرت نتيجة <b>"+withRes+"</b> منها — اضغط «حدّث» ثم استورد الملف لتحديثها"):" · لمّا تنزل النتائج اضغط «حدّث نتائج مبارياتي»");
+}
+document.querySelectorAll(".tabs button").forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    document.getElementById("tab-"+b.dataset.tab).classList.add("active");
+    if(b.dataset.tab==="groups")renderGroups();
+    if(b.dataset.tab==="bracket")renderBracket();
+  };
+});
+document.getElementById("resetKO").onclick=()=>{
+  if(confirm("تصفير كل توقعات المجموعات والإقصائيات؟")){
+    store={results:{},scores:{},thirds:[null,null,null,null,null,null,null,null],koWin:{},r32override:{},lastSync:null,added:store.added,icsSeq:store.icsSeq};
+    save();renderGroups();renderBracket();renderMatches();
+  }
+};
+initTZ();initFilters();initSync();renderMatches();
+</script>
+</body>
+</html>
