@@ -144,6 +144,11 @@
     background:var(--blue);color:#fff;margin:6px 0;box-shadow:0 8px 22px rgba(48,79,254,.32)
   }
   .bigbtn.alt{background:var(--navy);box-shadow:0 8px 22px rgba(16,22,79,.25)}
+  .subcard{background:var(--navy);border-radius:16px;padding:16px;margin:12px 0}
+  .subcard .subtitle{font-family:var(--disp);font-weight:800;color:#fff;font-size:20px;margin-bottom:6px}
+  .subcard .subdesc{color:#c5cbf5;font-size:12.5px;line-height:1.7;margin-bottom:12px}
+  .subcard .bigbtn{margin:6px 0}
+  .subcard .bigbtn.copy{background:transparent;border:2px solid rgba(255,255,255,.55);color:#fff;box-shadow:none}
   .addbtn.added{background:var(--green)}
   .calnote{font-size:12px;color:var(--navy);line-height:1.6;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
   .calnote b{color:var(--blue)}
@@ -275,12 +280,12 @@
       <div class="activebar" id="activeBar"></div>
       <div class="resultcount" id="resultCount"></div>
     </div>
-    <button class="bigbtn" id="dlAll">حمّل المباريات الظاهرة إلى تقويم جوالك (.ics)</button>
-    <button class="bigbtn alt" id="updateCal">حدّث نتائج مبارياتي في التقويم</button>
-    <div class="calnote" id="calNote"></div>
-    <div class="note">
-      اضغط <b>«أضف»</b> بجانب أي مباراة لتنزيل ملف يضيفها لتقويم جوالك (آيفون/أندرويد) بتوقيتك المحلي.
-      ولمّا تنزل النتائج، اضغط <b>«حدّث نتائج مبارياتي في التقويم»</b> ويتولّد ملف بنفس الأحداث محدّثة بالنتيجة — استورده مرة ثانية وبيحدّث نفس المباريات في تقويمك (ما يكررها).
+    <div class="subcard">
+      <div class="subtitle">تقويم تلقائي يحدّث نفسه</div>
+      <div class="subdesc">اشترك مرة وحدة، وكل المباريات والمواعيد والنتائج تتحدث في تقويم جوالك تلقائياً بدون أي ضغط ولا إعادة تحميل.</div>
+      <button class="bigbtn" id="subBtn">اشترك في تقويم المباريات</button>
+      <button class="bigbtn copy" id="copyBtn">نسخ رابط الاشتراك (Google Calendar)</button>
+      <div class="calnote" id="calNote">آيفون: يفتح نافذة الاشتراك مباشرة. أندرويد/Google: انسخ الرابط وأضفه من calendar.google.com ← تقويمات أخرى ← من رابط URL.</div>
     </div>
     <div id="matchList"></div>
   </section>
@@ -438,6 +443,10 @@ function save(){try{localStorage.setItem("wc26",JSON.stringify(store));}catch(e)
 const DATA_URL_DEFAULT="https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
 let DATA_URL = (function(){try{return localStorage.getItem("wc26_url")||DATA_URL_DEFAULT;}catch(e){return DATA_URL_DEFAULT;}})();
 
+/* رابط الاشتراك التلقائي في التقويم (يتحدّث نفسه عبر GitHub Actions) */
+const SUB_HTTPS="https://fai9al93.github.io/worldcup26/matches.ics";
+const SUB_WEBCAL="webcal://fai9al93.github.io/worldcup26/matches.ics";
+
 /* خريطة أسماء openfootball -> أكوادنا (تشمل خانات الملحق كما في الصورة) */
 const OF_NAME={
   "mexico":"MEX","south africa":"RSA","south korea":"KOR","korea republic":"KOR",
@@ -546,12 +555,9 @@ function renderMatches(){
         '<div class="vs">×</div>'+
         '<div class="trow"><span class="fl">'+T[m[2]][1]+'</span><span class="tname">'+T[m[2]][0]+'</span></div>'+
       '</div>'+
-      '<div class="mtime"><div class="clock">'+fmtTime(o.d,curTZ)+'</div>'+
-      '<button class="addbtn'+(isAdded(m)?' added':'')+'">'+(isAdded(m)?'مضافة':'أضف')+'</button></div>';
-    el.querySelector(".addbtn").onclick=()=>{markAdded(m);downloadICS([buildEvent(m)],"match-"+m[1]+"-"+m[2]+".ics");renderMatches();};
+      '<div class="mtime"><div class="clock">'+fmtTime(o.d,curTZ)+'</div></div>';
     list.appendChild(el);
   });
-  updateCalNote();
   if(!rows.length)list.innerHTML='<div class="note">لا توجد مباريات مطابقة.</div>';
 }
 
@@ -915,29 +921,16 @@ function initFilters(){
       document.querySelectorAll(".seg button[data-logic]").forEach(x=>x.classList.toggle("on",x===b));
       renderMatches();};
   });
-  // download only what's visible (and remember them as added)
-  document.getElementById("dlAll").onclick=()=>{
-    const rows=filteredRows();
-    if(!rows.length){alert("لا توجد مباريات مطابقة للتنزيل.");return;}
-    rows.forEach(o=>markAdded(o.m));
-    downloadICS(rows.map(o=>buildEvent(o.m,store.icsSeq)), rows.length===72?"world-cup-2026-all.ics":"world-cup-2026-filtered.ics");
-    renderMatches();
+  // الاشتراك التلقائي بدل التحميل الثابت
+  document.getElementById("subBtn").onclick=()=>{ location.href=SUB_WEBCAL; };
+  document.getElementById("copyBtn").onclick=()=>{
+    const cn=document.getElementById("calNote");
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(SUB_HTTPS)
+        .then(()=>{ if(cn) cn.innerHTML="تم نسخ الرابط — أضفه في Google Calendar ← تقويمات أخرى ← من رابط URL."; })
+        .catch(()=>{ prompt("انسخ رابط الاشتراك:",SUB_HTTPS); });
+    } else { prompt("انسخ رابط الاشتراك:",SUB_HTTPS); }
   };
-  // re-export added matches with updated scores + higher SEQUENCE so re-import updates them
-  document.getElementById("updateCal").onclick=()=>{
-    if(!store.added.length){alert("ما أضفت أي مباراة للتقويم بعد. اضغط «أضف» على المباريات اللي تبيها أول.");return;}
-    store.icsSeq=(store.icsSeq||0)+1; save();
-    const evs=store.added.map(k=>{const m=MATCHES.find(x=>matchKey(x)===k);return m?buildEvent(m,store.icsSeq):null;}).filter(Boolean);
-    downloadICS(evs,"world-cup-2026-update.ics");
-    updateCalNote();
-  };
-}
-function updateCalNote(){
-  const el=document.getElementById("calNote"); if(!el)return;
-  const n=store.added.length;
-  const withRes=store.added.filter(k=>store.scores[k]).length;
-  if(!n){el.innerHTML="لسا ما أضفت مباريات للتقويم.";return;}
-  el.innerHTML="أضفت <b>"+n+"</b> مباراة للتقويم"+(withRes?(" · ظهرت نتيجة <b>"+withRes+"</b> منها — اضغط «حدّث» ثم استورد الملف لتحديثها"):" · لمّا تنزل النتائج اضغط «حدّث نتائج مبارياتي»");
 }
 document.querySelectorAll(".tabs button").forEach(b=>{
   b.onclick=()=>{
