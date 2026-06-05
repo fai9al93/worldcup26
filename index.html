@@ -281,11 +281,12 @@
       <div class="resultcount" id="resultCount"></div>
     </div>
     <div class="subcard">
-      <div class="subtitle">تقويم تلقائي يحدّث نفسه</div>
-      <div class="subdesc">اشترك مرة وحدة، وكل المباريات والمواعيد والنتائج تتحدث في تقويم جوالك تلقائياً بدون أي ضغط ولا إعادة تحميل.</div>
-      <button class="bigbtn" id="subBtn">اشترك في تقويم المباريات</button>
-      <button class="bigbtn copy" id="copyBtn">نسخ رابط الاشتراك (Google Calendar)</button>
-      <div class="calnote" id="calNote">آيفون: يفتح نافذة الاشتراك مباشرة. أندرويد/Google: انسخ الرابط وأضفه من calendar.google.com ← تقويمات أخرى ← من رابط URL.</div>
+      <div class="subtitle">التقويم — ثلاث طرق</div>
+      <div class="subdesc">اشترك في تقويم يحدّث نفسه تلقائياً (الكل أو منتخب/مجموعة حسب الفلتر)، أو حمّل المباريات المعروضة كملف ثابت.</div>
+      <button class="bigbtn" id="subAllBtn">اشترك في كل المباريات (تلقائي)</button>
+      <button class="bigbtn copy" id="subFilterBtn">اشترك في الفلتر الحالي (منتخب أو مجموعة)</button>
+      <button class="bigbtn copy" id="dlFilterBtn">حمّل المباريات المعروضة (.ics)</button>
+      <div class="calnote" id="calNote">«اشترك» = تحديث تلقائي بدون فتح التطبيق (يفتح مباشرة على آيفون؛ أندرويد انسخ الرابط لـ Google Calendar). «حمّل» = ملف ثابت يدعم أي توليفة فلاتر.</div>
     </div>
     <div id="matchList"></div>
   </section>
@@ -921,15 +922,28 @@ function initFilters(){
       document.querySelectorAll(".seg button[data-logic]").forEach(x=>x.classList.toggle("on",x===b));
       renderMatches();};
   });
-  // الاشتراك التلقائي بدل التحميل الثابت
-  document.getElementById("subBtn").onclick=()=>{ location.href=SUB_WEBCAL; };
-  document.getElementById("copyBtn").onclick=()=>{
+  // ثلاث طرق للتقويم: اشتراك شامل / اشتراك حسب الفلتر / تحميل ملف
+  const SUB_BASE="fai9al93.github.io/worldcup26/";
+  function currentFeed(){
+    if(filter.teams.size===1 && filter.groups.size===0){const t=[...filter.teams][0];return {name:T[t][0],path:"ics/team-"+t+".ics"};}
+    if(filter.groups.size===1 && filter.teams.size===0){const g=[...filter.groups][0];return {name:"مجموعة "+g,path:"ics/group-"+g+".ics"};}
+    return null;
+  }
+  document.getElementById("subAllBtn").onclick=()=>{
+    document.getElementById("calNote").innerHTML="اشتراك: كل المباريات. أندرويد انسخ الرابط: https://"+SUB_BASE+"matches.ics";
+    location.href=SUB_WEBCAL;
+  };
+  document.getElementById("subFilterBtn").onclick=()=>{
     const cn=document.getElementById("calNote");
-    if(navigator.clipboard&&navigator.clipboard.writeText){
-      navigator.clipboard.writeText(SUB_HTTPS)
-        .then(()=>{ if(cn) cn.innerHTML="تم نسخ الرابط — أضفه في Google Calendar ← تقويمات أخرى ← من رابط URL."; })
-        .catch(()=>{ prompt("انسخ رابط الاشتراك:",SUB_HTTPS); });
-    } else { prompt("انسخ رابط الاشتراك:",SUB_HTTPS); }
+    const f=currentFeed();
+    if(!f){ cn.innerHTML="اشتراك الفلتر يدعم <b>منتخب واحد</b> أو <b>مجموعة واحدة</b> فقط. لباقي التوليفات استخدم «حمّل المباريات المعروضة»."; return; }
+    cn.innerHTML="اشتراك: "+f.name+". أندرويد انسخ الرابط: https://"+SUB_BASE+f.path;
+    location.href="webcal://"+SUB_BASE+f.path;
+  };
+  document.getElementById("dlFilterBtn").onclick=()=>{
+    const rows=filteredRows();
+    if(!rows.length){alert("لا توجد مباريات مطابقة.");return;}
+    downloadICS(rows.map(o=>buildEvent(o.m,0)), rows.length===72?"world-cup-2026.ics":"world-cup-filtered.ics");
   };
 }
 document.querySelectorAll(".tabs button").forEach(b=>{

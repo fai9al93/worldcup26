@@ -74,31 +74,43 @@ function esc(s){ return String(s).replace(/([,;\\])/g,"\\$1").replace(/\n/g,"\\n
   if(!res.ok) throw new Error("fetch "+res.status);
   const data = await res.json();
   const now = stamp(new Date());
-  const out = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//worldcup26//AR//","CALSCALE:GREGORIAN","METHOD:PUBLISH",
-    "X-WR-CALNAME:كأس العالم 2026","X-WR-TIMEZONE:UTC","REFRESH-INTERVAL;VALUE=DURATION:PT3H","X-PUBLISHED-TTL:PT3H"];
-  let n=0;
+  const recs = [];
   (data.matches||[]).forEach((om,i)=>{
     const start = toUTC(om.date, om.time);
     if(!start) return;
     const end = new Date(start.getTime()+120*60000);
+    const c1 = OF[String(om.team1||"").trim().toLowerCase()] || null;
+    const c2 = OF[String(om.team2||"").trim().toLowerCase()] || null;
     const a = ar(om.team1), b = ar(om.team2);
     const sc = score(om);
-    const ctx = om.group ? ("مجموعة "+String(om.group).replace(/group/i,"").trim())
-                         : (ROUND_AR[String(om.round||"").toLowerCase()] || om.round || "");
-    let summary;
-    if(sc) summary = `${a} ${sc[0]}-${sc[1]} ${b}` + (ctx?` (${ctx})`:"");
-    else   summary = `${a} × ${b}` + (ctx?` (${ctx})`:"");
+    const grp = om.group ? String(om.group).replace(/group/i,"").trim() : null;
+    const ctx = grp ? ("مجموعة "+grp) : (ROUND_AR[String(om.round||"").toLowerCase()] || om.round || "");
+    const summary = sc ? `${a} ${sc[0]}-${sc[1]} ${b}` + (ctx?` (${ctx})`:"")
+                       : `${a} × ${b}` + (ctx?` (${ctx})`:"");
     const uid = "wc26-"+(om.num || ((om.group||"").replace(/\s+/g,"")+"-"+i))+"@worldcup26";
-    out.push("BEGIN:VEVENT","UID:"+uid,"DTSTAMP:"+now,"SEQUENCE:"+(sc?2:1),
+    const lines = ["BEGIN:VEVENT","UID:"+uid,"DTSTAMP:"+now,"SEQUENCE:"+(sc?2:1),
       "DTSTART:"+stamp(start),"DTEND:"+stamp(end),
       "SUMMARY:"+esc("كأس العالم: "+summary),
       "DESCRIPTION:"+esc("كأس العالم 2026"+(om.ground?(" — "+om.ground):"")),
-      om.ground?("LOCATION:"+esc(om.ground)):"X-X:0",
+      om.ground?("LOCATION:"+esc(om.ground)):null,
       "BEGIN:VALARM","TRIGGER:-PT30M","ACTION:DISPLAY","DESCRIPTION:تذكير بالمباراة","END:VALARM",
-      "END:VEVENT");
-    n++;
+      "END:VEVENT"].filter(Boolean);
+    recs.push({ lines, grp, codes:[c1,c2].filter(Boolean) });
   });
-  out.push("END:VCALENDAR");
-  fs.writeFileSync("matches.ics", out.filter(l=>l!=="X-X:0").join("\r\n")+"\r\n","utf8");
-  console.log("wrote matches.ics with "+n+" events");
+  function wrap(name, list){
+    return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//worldcup26//AR//","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+      "X-WR-CALNAME:"+name,"X-WR-TIMEZONE:UTC","REFRESH-INTERVAL;VALUE=DURATION:PT3H","X-PUBLISHED-TTL:PT3H"]
+      .concat(...list.map(r=>r.lines)).concat(["END:VCALENDAR"]).join("\r\n")+"\r\n";
+  }
+  fs.mkdirSync("ics",{recursive:true});
+  fs.writeFileSync("matches.ics", wrap("كأس العالم 2026", recs), "utf8");        // الشامل
+  "ABCDEFGHIJKL".split("").forEach(g=>{                                          // كل مجموعة
+    const list = recs.filter(r=>r.grp===g);
+    if(list.length) fs.writeFileSync("ics/group-"+g+".ics", wrap("كأس العالم — مجموعة "+g, list), "utf8");
+  });
+  Object.keys(AR).forEach(code=>{                                                // كل منتخب
+    const list = recs.filter(r=>r.codes.includes(code));
+    if(list.length) fs.writeFileSync("ics/team-"+code+".ics", wrap("كأس العالم — "+AR[code], list), "utf8");
+  });
+  console.log("wrote matches.ics ("+recs.length+" events) + 12 groups + "+Object.keys(AR).length+" teams");
 })();
